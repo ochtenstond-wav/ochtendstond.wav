@@ -1,0 +1,407 @@
+<html><head><style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.app { max-width: 680px; }
+.tab-bar { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--color-background-secondary); padding: 4px; border-radius: var(--border-radius-lg); }
+.tab { flex: 1; padding: 8px 12px; border: none; background: transparent; cursor: pointer; font-size: 13px; color: var(--color-text-secondary); border-radius: var(--border-radius-md); font-family: var(--font-sans); transition: all 0.15s; }
+.tab.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; border: 0.5px solid var(--color-border-tertiary); }
+.panel { display: none; }
+.panel.active { display: block; }
+
+.form-group { margin-bottom: 1.2rem; }
+.form-label { display: block; font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 6px; }
+.form-sublabel { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 6px; display: block; }
+input, textarea, select { width: 100%; }
+textarea { resize: vertical; min-height: 80px; }
+
+.style-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.style-option { padding: 10px 8px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); cursor: pointer; text-align: center; font-size: 12px; color: var(--color-text-secondary); background: var(--color-background-primary); transition: all 0.15s; user-select: none; }
+.style-option.selected { border: 1.5px solid #7F77DD; color: #3C3489; background: #EEEDFE; }
+.style-option i { font-size: 20px; display: block; margin-bottom: 4px; }
+
+.progress-bar { display: flex; gap: 6px; margin-bottom: 1.5rem; align-items: center; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-border-tertiary); transition: all 0.2s; }
+.step-dot.done { background: #1D9E75; }
+.step-dot.active { background: #7F77DD; width: 20px; border-radius: 4px; }
+.step-label { font-size: 12px; color: var(--color-text-tertiary); margin-left: 4px; }
+
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+.btn { padding: 9px 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; cursor: pointer; font-size: 14px; font-family: var(--font-sans); color: var(--color-text-primary); transition: all 0.15s; }
+.btn:hover { background: var(--color-background-secondary); }
+.btn-primary { background: #534AB7; color: white; border-color: #534AB7; font-weight: 500; }
+.btn-primary:hover { background: #3C3489; border-color: #3C3489; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.section-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.section-sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1.2rem; }
+
+.breakdown-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); margin-bottom: 12px; overflow: hidden; }
+.breakdown-header { padding: 12px 16px; background: var(--color-background-secondary); display: flex; align-items: center; gap: 10px; }
+.breakdown-header i { font-size: 18px; color: #534AB7; }
+.breakdown-header-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.breakdown-body { padding: 14px 16px; }
+.breakdown-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); gap: 12px; }
+.breakdown-row:last-child { border-bottom: none; padding-bottom: 0; }
+.breakdown-key { font-size: 13px; color: var(--color-text-secondary); min-width: 130px; }
+.breakdown-val { font-size: 13px; color: var(--color-text-primary); text-align: right; flex: 1; }
+
+.shot-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; margin: 3px 3px 3px 0; background: #EEEDFE; color: #3C3489; }
+.equip-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; margin: 3px 3px 3px 0; background: #E1F5EE; color: #085041; }
+.deliverable-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; margin: 3px 3px 3px 0; background: #FAEEDA; color: #633806; }
+
+.loading-box { text-align: center; padding: 2.5rem 1rem; }
+.loading-box i { font-size: 32px; color: #7F77DD; margin-bottom: 12px; display: block; }
+.spinner { display: inline-block; width: 32px; height: 32px; border: 2px solid var(--color-border-tertiary); border-top-color: #534AB7; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.client-tab { font-size: 13px; }
+.overview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px; }
+.metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.metric-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+
+.project-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin-bottom: 8px; background: var(--color-background-primary); cursor: pointer; }
+.project-row:hover { background: var(--color-background-secondary); }
+.proj-status { padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.status-new { background: #EEEDFE; color: #3C3489; }
+.status-plan { background: #FAEEDA; color: #633806; }
+.status-shoot { background: #E1F5EE; color: #085041; }
+.proj-info { flex: 1; }
+.proj-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.proj-meta { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.proj-deadline { font-size: 12px; color: var(--color-text-tertiary); }
+</style>
+
+</head><body><div class="app">
+  <h2 class="sr-only">Videograaf intake systeem — klantformulier en production breakdown</h2>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('intake')"><i class="ti ti-file-text" aria-hidden="true"></i> Klantintake</button>
+    <button class="tab" onclick="switchTab('breakdown')"><i class="ti ti-layout-list" aria-hidden="true"></i> Breakdown</button>
+    <button class="tab" onclick="switchTab('overzicht')"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</button>
+  </div>
+
+  <div id="tab-intake" class="panel active">
+    <div class="progress-bar" id="progress">
+      <div class="step-dot active" id="dot0"></div>
+      <div class="step-dot" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+      <span class="step-label" id="step-label">Stap 1 van 4 — Project</span>
+    </div>
+
+    <div id="step0">
+      <p class="section-title">Over jouw project</p>
+      <p class="section-sub">Vertel me kort wat je in gedachten hebt.</p>
+      <div class="form-group">
+        <label class="form-label">Jouw naam &amp; bedrijf</label>
+        <input type="text" placeholder="bijv. Lena Martens — Studio Bloom" id="f-naam">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Wat voor video wil je laten maken?</label>
+        <textarea placeholder="bijv. Een korte merkvideo voor Instagram, max. 60 seconden, om mijn nieuwe collectie te introduceren." id="f-wat"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Doel van de video</label>
+        <div class="style-grid">
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-brand-instagram" aria-hidden="true"></i>Social media</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-device-tv" aria-hidden="true"></i>Advertentie</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-building-store" aria-hidden="true"></i>Merk/brand</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-confetti" aria-hidden="true"></i>Event</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-user-circle" aria-hidden="true"></i>Portret</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-package" aria-hidden="true"></i>Product</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-home" aria-hidden="true"></i>Vastgoed</div>
+          <div class="style-option" onclick="toggleGoal(this)"><i class="ti ti-dots" aria-hidden="true"></i>Andere</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="step1" style="display:none">
+      <p class="section-title">Stijl &amp; sfeer</p>
+      <p class="section-sub">Klik alles aan wat past bij jouw visie.</p>
+      <div class="form-group">
+        <label class="form-label">Sfeer</label>
+        <div class="style-grid">
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-sun" aria-hidden="true"></i>Licht &amp; luchtig</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-moon" aria-hidden="true"></i>Donker &amp; moody</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-sparkles" aria-hidden="true"></i>Luxueus</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-bolt" aria-hidden="true"></i>Energiek</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-leaf" aria-hidden="true"></i>Rustig &amp; puur</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-building" aria-hidden="true"></i>Zakelijk</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-camera" aria-hidden="true"></i>Documentaire</div>
+          <div class="style-option" onclick="toggleStyle(this)"><i class="ti ti-trending-up" aria-hidden="true"></i>Inspirerend</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Referenties (optioneel)</label>
+        <span class="form-sublabel">Plak links naar video's, Instagram-accounts of beschrijf een film/artiest die je stijl raakt.</span>
+        <textarea placeholder="bijv. @zara op Instagram, of de Apple product launches van 2023..." id="f-ref"></textarea>
+      </div>
+    </div>
+
+    <div id="step2" style="display:none">
+      <p class="section-title">Locatie &amp; timing</p>
+      <p class="section-sub">Praktische informatie voor de planning.</p>
+      <div class="form-group">
+        <label class="form-label">Locatie van de opnames</label>
+        <input type="text" placeholder="bijv. Jouw atelier in Gent, of een nader te bepalen outdoor locatie" id="f-loc">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gewenste opnamedatum (of periode)</label>
+        <input type="text" placeholder="bijv. Tweede helft van juni 2025, of zo snel mogelijk" id="f-datum">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Deadline — wanneer heb je de video nodig?</label>
+        <input type="text" placeholder="bijv. 15 juli 2025 voor een campagnestart" id="f-deadline">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Zijn er modellen of talent aanwezig?</label>
+        <select id="f-talent">
+          <option value="">Kies...</option>
+          <option>Ja, ikzelf ben aanwezig</option>
+          <option>Ja, ik regel modellen zelf</option>
+          <option>Nee, enkel producten/locatie</option>
+          <option>Nog niet beslist</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="step3" style="display:none">
+      <p class="section-title">Deliverables &amp; extra info</p>
+      <p class="section-sub">Wat verwacht je concreet als eindresultaat?</p>
+      <div class="form-group">
+        <label class="form-label">Welke formaten heb je nodig?</label>
+        <div class="style-grid">
+          <div class="style-option" onclick="toggleFormat(this)"><i class="ti ti-rectangle-vertical" aria-hidden="true"></i>Verticaal (9:16)</div>
+          <div class="style-option" onclick="toggleFormat(this)"><i class="ti ti-rectangle" aria-hidden="true"></i>Horizontaal (16:9)</div>
+          <div class="style-option" onclick="toggleFormat(this)"><i class="ti ti-square" aria-hidden="true"></i>Vierkant (1:1)</div>
+          <div class="style-option" onclick="toggleFormat(this)"><i class="ti ti-cut" aria-hidden="true"></i>Extra cuts/reels</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Muziek</label>
+        <select id="f-muziek">
+          <option value="">Kies...</option>
+          <option>Jij kiest passende muziek</option>
+          <option>Ik heb al muziek in gedachten</option>
+          <option>Geen muziek nodig</option>
+          <option>Voice-over gewenst</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Aanvullende informatie</label>
+        <textarea placeholder="Alles wat ik verder moet weten: budget, bijzondere wensen, vragen..." id="f-extra"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn" id="btn-back" onclick="prevStep()" style="visibility:hidden">← Vorige</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextStep()">Volgende →</button>
+    </div>
+  </div>
+
+  <div id="tab-breakdown" class="panel">
+    <div id="breakdown-empty" style="text-align:center; padding: 3rem 1rem;">
+      <i class="ti ti-file-analytics" style="font-size:40px; color: var(--color-text-tertiary); display:block; margin-bottom:12px;" aria-hidden="true"></i>
+      <p style="font-size:14px; color:var(--color-text-secondary);">Vul eerst het intakeformulier in om een automatische production breakdown te genereren.</p>
+      <button class="btn btn-primary" style="margin-top:1rem;" onclick="switchTab('intake')">Formulier invullen →</button>
+    </div>
+    <div id="breakdown-content" style="display:none"></div>
+  </div>
+
+  <div id="tab-overzicht" class="panel">
+    <div class="overview-grid">
+      <div class="metric"><div class="metric-label">Actieve projecten</div><div class="metric-val" id="m-active">0</div></div>
+      <div class="metric"><div class="metric-label">Ingediend</div><div class="metric-val" id="m-total">0</div></div>
+      <div class="metric"><div class="metric-label">Eerstvolgende shoot</div><div class="metric-val" id="m-next" style="font-size:14px; padding-top:4px;">—</div></div>
+    </div>
+    <p style="font-size:13px; font-weight:500; color:var(--color-text-secondary); margin-bottom:10px;">Projecten</p>
+    <div id="project-list">
+      <p style="font-size:13px; color:var(--color-text-tertiary); text-align:center; padding:2rem 0;">Nog geen projecten. Vul het intakeformulier in.</p>
+    </div>
+    <button class="btn btn-primary" style="margin-top:1rem; width:100%;" onclick="switchTab('intake')"><i class="ti ti-plus" aria-hidden="true"></i> Nieuw project</button>
+  </div>
+</div>
+
+<script>
+var currentStep = 0;
+var totalSteps = 4;
+var projects = [];
+var selectedGoals = [];
+var selectedStyles = [];
+var selectedFormats = [];
+
+function switchTab(name) {
+  document.querySelectorAll('.tab, .panel').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelector('.tab:nth-child(' + (name === 'intake' ? 1 : name === 'breakdown' ? 2 : 3) + ')').classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+function toggleGoal(el) {
+  el.classList.toggle('selected');
+  var t = el.querySelector('i').nextSibling ? el.textContent.trim() : el.innerText.trim();
+  var idx = selectedGoals.indexOf(t);
+  if (idx > -1) selectedGoals.splice(idx, 1); else selectedGoals.push(t);
+}
+function toggleStyle(el) {
+  el.classList.toggle('selected');
+  var t = el.innerText.trim();
+  var idx = selectedStyles.indexOf(t);
+  if (idx > -1) selectedStyles.splice(idx, 1); else selectedStyles.push(t);
+}
+function toggleFormat(el) {
+  el.classList.toggle('selected');
+  var t = el.innerText.trim();
+  var idx = selectedFormats.indexOf(t);
+  if (idx > -1) selectedFormats.splice(idx, 1); else selectedFormats.push(t);
+}
+
+function updateProgress() {
+  for (var i = 0; i < totalSteps; i++) {
+    var dot = document.getElementById('dot' + i);
+    if (!dot) continue;
+    dot.className = 'step-dot';
+    if (i < currentStep) dot.classList.add('done');
+    else if (i === currentStep) dot.classList.add('active');
+  }
+  document.getElementById('step-label').textContent = 'Stap ' + (currentStep + 1) + ' van ' + totalSteps + ' — ' + ['Project', 'Stijl', 'Locatie & timing', 'Deliverables'][currentStep];
+  document.getElementById('btn-back').style.visibility = currentStep === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = currentStep === totalSteps - 1 ? 'Genereer breakdown ↗' : 'Volgende →';
+}
+
+function nextStep() {
+  if (currentStep < totalSteps - 1) {
+    document.getElementById('step' + currentStep).style.display = 'none';
+    currentStep++;
+    document.getElementById('step' + currentStep).style.display = 'block';
+    updateProgress();
+  } else {
+    generateBreakdown();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    document.getElementById('step' + currentStep).style.display = 'none';
+    currentStep--;
+    document.getElementById('step' + currentStep).style.display = 'block';
+    updateProgress();
+  }
+}
+
+function generateBreakdown() {
+  var naam = document.getElementById('f-naam').value || 'Klant';
+  var wat = document.getElementById('f-wat').value || 'Merkvideo';
+  var ref = document.getElementById('f-ref').value || '';
+  var loc = document.getElementById('f-loc').value || 'Nader te bepalen';
+  var datum = document.getElementById('f-datum').value || 'Flexibel';
+  var deadline = document.getElementById('f-deadline').value || 'Niet opgegeven';
+  var talent = document.getElementById('f-talent').value || 'Onbekend';
+  var muziek = document.getElementById('f-muziek').value || 'Nader te bepalen';
+  var extra = document.getElementById('f-extra').value || '';
+
+  document.getElementById('breakdown-empty').style.display = 'none';
+  document.getElementById('breakdown-content').style.display = 'block';
+  document.getElementById('breakdown-content').innerHTML = '<div class="loading-box"><div class="spinner"></div><p style="font-size:14px; color:var(--color-text-secondary);">AI genereert je production breakdown...</p></div>';
+  switchTab('breakdown');
+
+  var prompt = "Je bent een professionele videoproductie-assistent. Genereer een production breakdown in JSON op basis van deze klantintake:\n\nKlant: " + naam + "\nProjectbeschrijving: " + wat + "\nDoelen: " + (selectedGoals.join(', ') || 'niet opgegeven') + "\nStijl/sfeer: " + (selectedStyles.join(', ') || 'niet opgegeven') + "\nReferenties: " + (ref || 'geen') + "\nLocatie: " + loc + "\nOpnamedatum: " + datum + "\nDeadline: " + deadline + "\nTalent: " + talent + "\nFormaten: " + (selectedFormats.join(', ') || 'niet opgegeven') + "\nMuziek: " + muziek + "\nExtra: " + (extra || 'geen') + "\n\nGeef ALLEEN geldig JSON terug (geen markdown, geen uitleg) in dit formaat:\n{\n  \"projectnaam\": \"...\",\n  \"klant\": \"...\",\n  \"concept\": \"...\",\n  \"sfeer\": \"...\",\n  \"shots\": [\"...\", \"...\", \"...\", \"...\", \"...\"],\n  \"apparatuur\": [\"...\", \"...\", \"...\"],\n  \"planning\": [{\"fase\": \"Pre-productie\", \"actie\": \"...\"}, {\"fase\": \"Shoot\", \"actie\": \"...\"}, {\"fase\": \"Post\", \"actie\": \"...\"}],\n  \"deliverables\": [\"...\", \"...\"],\n  \"aandachtspunten\": \"...\"\n}";
+
+  fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      messages: [{ role: "user", content: prompt }]
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var text = data.content.map(function(i) { return i.text || ''; }).join('');
+    var clean = text.replace(/```json|```/g, '').trim();
+    var d = JSON.parse(clean);
+    renderBreakdown(d, naam, deadline, datum, loc);
+    addProject(d.projectnaam || wat, naam, deadline, datum);
+  })
+  .catch(function(err) {
+    document.getElementById('breakdown-content').innerHTML = '<p style="color:var(--color-text-danger); font-size:14px; padding:1rem;">Er is iets misgegaan. Controleer je verbinding en probeer opnieuw.</p>';
+  });
+}
+
+function renderBreakdown(d, naam, deadline, datum, loc) {
+  var shotsHtml = (d.shots || []).map(function(s) { return '<span class="shot-pill">' + s + '</span>'; }).join('');
+  var equipHtml = (d.apparatuur || []).map(function(s) { return '<span class="equip-pill">' + s + '</span>'; }).join('');
+  var delivHtml = (d.deliverables || []).map(function(s) { return '<span class="deliverable-pill">' + s + '</span>'; }).join('');
+  var planHtml = (d.planning || []).map(function(p) {
+    return '<div class="breakdown-row"><span class="breakdown-key">' + p.fase + '</span><span class="breakdown-val">' + p.actie + '</span></div>';
+  }).join('');
+
+  document.getElementById('breakdown-content').innerHTML =
+    '<p style="font-size:12px; color:var(--color-text-tertiary); margin-bottom:1rem; text-align:right;">AI-gegenereerd — controleer en pas aan waar nodig</p>' +
+
+    '<div class="breakdown-card">' +
+    '<div class="breakdown-header"><i class="ti ti-id" aria-hidden="true"></i><span class="breakdown-header-title">Project info</span></div>' +
+    '<div class="breakdown-body">' +
+    '<div class="breakdown-row"><span class="breakdown-key">Projectnaam</span><span class="breakdown-val">' + (d.projectnaam || '—') + '</span></div>' +
+    '<div class="breakdown-row"><span class="breakdown-key">Klant</span><span class="breakdown-val">' + (d.klant || naam) + '</span></div>' +
+    '<div class="breakdown-row"><span class="breakdown-key">Locatie</span><span class="breakdown-val">' + (document.getElementById('f-loc').value || 'Nader te bepalen') + '</span></div>' +
+    '<div class="breakdown-row"><span class="breakdown-key">Opnamedatum</span><span class="breakdown-val">' + (document.getElementById('f-datum').value || '—') + '</span></div>' +
+    '<div class="breakdown-row"><span class="breakdown-key">Deadline</span><span class="breakdown-val">' + (document.getElementById('f-deadline').value || '—') + '</span></div>' +
+    '</div></div>' +
+
+    '<div class="breakdown-card">' +
+    '<div class="breakdown-header"><i class="ti ti-bulb" aria-hidden="true"></i><span class="breakdown-header-title">Concept & sfeer</span></div>' +
+    '<div class="breakdown-body">' +
+    '<div class="breakdown-row"><span class="breakdown-key">Concept</span><span class="breakdown-val">' + (d.concept || '—') + '</span></div>' +
+    '<div class="breakdown-row"><span class="breakdown-key">Sfeer</span><span class="breakdown-val">' + (d.sfeer || '—') + '</span></div>' +
+    '</div></div>' +
+
+    '<div class="breakdown-card">' +
+    '<div class="breakdown-header"><i class="ti ti-camera" aria-hidden="true"></i><span class="breakdown-header-title">Shot list</span></div>' +
+    '<div class="breakdown-body"><div style="padding:4px 0;">' + shotsHtml + '</div></div></div>' +
+
+    '<div class="breakdown-card">' +
+    '<div class="breakdown-header"><i class="ti ti-device-camera-video" aria-hidden="true"></i><span class="breakdown-header-title">Apparatuur & voorbereiding</span></div>' +
+    '<div class="breakdown-body"><div style="padding:4px 0;">' + equipHtml + '</div></div></div>' +
+
+    '<div class="breakdown-card">' +
+    '<div class="breakdown-header"><i class="ti ti-calendar" aria-hidden="true"></i><span class="breakdown-header-title">Planning</span></div>' +
+    '<div class="breakdown-body">' + planHtml + '</div></div>' +
+
+    '<div class="breakdown-card">' +
+    '<div class="breakdown-header"><i class="ti ti-package-export" aria-hidden="true"></i><span class="breakdown-header-title">Deliverables</span></div>' +
+    '<div class="breakdown-body"><div style="padding:4px 0;">' + delivHtml + '</div></div></div>' +
+
+    (d.aandachtspunten ? '<div class="breakdown-card"><div class="breakdown-header"><i class="ti ti-alert-triangle" aria-hidden="true"></i><span class="breakdown-header-title">Aandachtspunten</span></div><div class="breakdown-body"><p style="font-size:13px; color:var(--color-text-secondary);">' + d.aandachtspunten + '</p></div></div>' : '') +
+
+    '<button class="btn" style="width:100%; margin-top:8px;" onclick="sendPrompt(\'Maak een gedetailleerde shotlist op basis van de gegenereerde breakdown voor het project ' + (d.projectnaam || 'dit project') + '\')">Uitgebreide shotlist genereren ↗</button>';
+}
+
+function addProject(naam, klant, deadline, datum) {
+  projects.push({ naam: naam, klant: klant, deadline: deadline, datum: datum, status: 'new' });
+  updateDashboard();
+}
+
+function updateDashboard() {
+  document.getElementById('m-active').textContent = projects.length;
+  document.getElementById('m-total').textContent = projects.length;
+  var first = projects[0];
+  document.getElementById('m-next').textContent = first ? (first.datum || '—') : '—';
+
+  var list = document.getElementById('project-list');
+  if (projects.length === 0) {
+    list.innerHTML = '<p style="font-size:13px; color:var(--color-text-tertiary); text-align:center; padding:2rem 0;">Nog geen projecten.</p>';
+    return;
+  }
+  list.innerHTML = projects.map(function(p, i) {
+    return '<div class="project-row" onclick="switchTab(\'breakdown\')">' +
+      '<span class="proj-status status-new">Nieuw</span>' +
+      '<div class="proj-info"><div class="proj-name">' + p.naam + '</div><div class="proj-meta">' + p.klant + '</div></div>' +
+      '<span class="proj-deadline">' + (p.deadline || '—') + '</span>' +
+      '<i class="ti ti-chevron-right" style="color:var(--color-text-tertiary); font-size:16px;" aria-hidden="true"></i>' +
+      '</div>';
+  }).join('');
+}
+</script>
+</body></html>
