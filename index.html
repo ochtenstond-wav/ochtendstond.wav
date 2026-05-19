@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ebben — Visuals</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:#0d0d0d;
+color:white;
+padding:40px 20px;
+display:flex;
+justify-content:center;
+}
+
+.app{
+width:100%;
+max-width:700px;
+}
+
+.hero{
+margin-bottom:40px;
+}
+
+.hero p{
+font-size:12px;
+letter-spacing:3px;
+opacity:0.6;
+margin-bottom:12px;
+}
+
+.hero h1{
+font-size:56px;
+line-height:0.95;
+font-weight:600;
+margin-bottom:20px;
+}
+
+.hero span{
+color:#8b7dff;
+}
+
+.hero-desc{
+font-size:15px;
+line-height:1.7;
+opacity:0.75;
+max-width:500px;
+}
+
+.tab-bar{
+display:flex;
+gap:8px;
+background:#161616;
+padding:6px;
+border-radius:14px;
+margin-bottom:30px;
+}
+
+.tab{
+flex:1;
+background:transparent;
+border:none;
+color:#888;
+padding:12px;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
+transition:0.2s;
+}
+
+.tab.active{
+background:#252525;
+color:white;
+}
+
+.panel{
+display:none;
+}
+
+.panel.active{
+display:block;
+}
+
+.form-group{
+margin-bottom:22px;
+}
+
+.form-label{
+display:block;
+font-size:13px;
+margin-bottom:8px;
+opacity:0.7;
+}
+
+input,
+textarea,
+select{
+width:100%;
+background:#161616;
+border:1px solid #252525;
+border-radius:12px;
+padding:14px;
+color:white;
+font-size:14px;
+}
+
+textarea{
+resize:vertical;
+min-height:100px;
+}
+
+.style-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+.style-option{
+background:#161616;
+border:1px solid #252525;
+padding:16px;
+border-radius:12px;
+cursor:pointer;
+font-size:13px;
+text-align:center;
+transition:0.2s;
+}
+
+.style-option.selected{
+background:#8b7dff;
+border-color:#8b7dff;
+color:white;
+}
+
+.progress{
+display:flex;
+gap:8px;
+margin-bottom:30px;
+}
+
+.dot{
+height:8px;
+flex:1;
+background:#222;
+border-radius:999px;
+}
+
+.dot.active{
+background:#8b7dff;
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
+margin-top:30px;
+}
+
+.btn{
+padding:14px 24px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:14px;
+}
+
+.btn-dark{
+background:#1a1a1a;
+color:white;
+}
+
+.btn-primary{
+background:#8b7dff;
+color:white;
+}
+
+.breakdown-card{
+background:#161616;
+border:1px solid #252525;
+border-radius:18px;
+padding:20px;
+margin-bottom:16px;
+}
+
+.breakdown-title{
+font-size:15px;
+margin-bottom:14px;
+color:#8b7dff;
+}
+
+.breakdown-text{
+font-size:14px;
+line-height:1.7;
+opacity:0.8;
+}
+
+.pill{
+display:inline-block;
+padding:8px 12px;
+background:#222;
+border-radius:999px;
+font-size:12px;
+margin:4px;
+}
+
+.dashboard-card{
+background:#161616;
+padding:20px;
+border-radius:18px;
+margin-bottom:12px;
+border:1px solid #252525;
+}
+
+.dashboard-card h3{
+font-size:15px;
+margin-bottom:8px;
+}
+
+.dashboard-card p{
+font-size:13px;
+opacity:0.7;
+}
+
+@media(max-width:700px){
+
+.hero h1{
+font-size:42px;
+}
+
+.style-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="hero">
+<p>CINEMATIC VISUAL STORYTELLING</p>
+
+<h1>
+Modern visuals<br>
+with <span>emotion</span>,<br>
+energy & atmosphere.
+</h1>
+
+<div class="hero-desc">
+Ik ben Ebben, videograaf met een passie voor sterke visuals, sfeer en storytelling. Van events en fashion tot artiesten en social content.
+</div>
+</div>
+
+<div class="tab-bar">
+<button class="tab active" onclick="switchTab('intake', this)">
+<i class="ti ti-file-text"></i>
+ Intake
+</button>
+
+<button class="tab" onclick="switchTab('breakdown', this)">
+<i class="ti ti-layout-list"></i>
+ Breakdown
+</button>
+
+<button class="tab" onclick="switchTab('dashboard', this)">
+<i class="ti ti-layout-dashboard"></i>
+ Dashboard
+</button>
+</div>
+
+<div id="intake" class="panel active">
+
+<div class="progress">
+<div class="dot active"></div>
+<div class="dot active"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+</div>
+
+<div class="form-group">
+<label class="form-label">Naam / bedrijf</label>
+<input type="text" id="name" placeholder="Studio, artiest of merk">
+</div>
+
+<div class="form-group">
+<label class="form-label">Wat wil je laten maken?</label>
+<textarea id="project" placeholder="Beschrijf kort jouw project"></textarea>
+</div>
+
+<div class="form-group">
+<label class="form-label">Stijl / sfeer</label>
+
+<div class="style-grid">
+
+<div class="style-option" onclick="toggle(this)">
+Moody
+</div>
+
+<div class="style-option" onclick="toggle(this)">
+Luxury
+</div>
+
+<div class="style-option" onclick="toggle(this)">
+Documentary
+</div>
+
+<div class="style-option" onclick="toggle(this)">
+Energetic
+</div>
+
+</div>
+</div>
+
+<div class="form-group">
+<label class="form-label">Locatie</label>
+<input type="text" placeholder="Gent, Brussel...">
+</div>
+
+<div class="form-group">
+<label class="form-label">Deadline</label>
+<input type="text" placeholder="Wanneer moet het klaar zijn?">
+</div>
+
+<div class="nav">
+<button class="btn btn-dark">
+Opslaan
+</button>
+
+<button class="btn btn-primary" onclick="generateBreakdown()">
+Genereer breakdown
+</button>
+</div>
+
+</div>
+
+<div id="breakdown" class="panel">
+
+<div class="breakdown-card">
+
+<div class="breakdown-title">
+Project concept
+</div>
+
+<div class="breakdown-text" id="concept">
+Vul eerst het intakeformulier in.
+</div>
+
+</div>
+
+<div class="breakdown-card">
+
+<div class="breakdown-title">
+Shotlist
+</div>
+
+<div id="shots"></div>
+
+</div>
+
+<div class="breakdown-card">
+
+<div class="breakdown-title">
+Equipment
+</div>
+
+<div id="equipment"></div>
+
+</div>
+
+</div>
+
+<div id="dashboard" class="panel">
+
+<div class="dashboard-card">
+<h3>Fashion campaign</h3>
+<p>Deadline — 14 juni</p>
+</div>
+
+<div class="dashboard-card">
+<h3>Artist visualizer</h3>
+<p>Editing fase</p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function switchTab(id, btn){
+
+document.querySelectorAll('.panel').forEach(panel=>{
+panel.classList.remove('active');
+});
+
+document.querySelectorAll('.tab').forEach(tab=>{
+tab.classList.remove('active');
+});
+
+document.getElementById(id).classList.add('active');
+
+btn.classList.add('active');
+
+}
+
+function toggle(el){
+
+el.classList.toggle('selected');
+
+}
+
+function generateBreakdown(){
+
+const project =
+document.getElementById('project').value;
+
+document.getElementById('concept').innerHTML =
+"Cinematic production focused on atmosphere, movement, emotion and social-first storytelling for modern digital platforms.";
+
+document.getElementById('shots').innerHTML = `
+<span class="pill">Wide establishing shots</span>
+<span class="pill">Slow motion details</span>
+<span class="pill">Handheld movement</span>
+<span class="pill">Close-up emotion shots</span>
+<span class="pill">Ambient b-roll</span>
+`;
+
+document.getElementById('equipment').innerHTML = `
+<span class="pill">Sony FX3</span>
+<span class="pill">24-70mm Lens</span>
+<span class="pill">Gimbal</span>
+<span class="pill">LED Lighting</span>
+<span class="pill">Drone</span>
+`;
+
+switchTab(
+'breakdown',
+document.querySelectorAll('.tab')[1]
+);
+
+}
+
+</script>
+
+</body>
+</html>
